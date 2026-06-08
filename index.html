@@ -38,7 +38,7 @@ body.dark{
 /* SCREENS */
 .screen{
     display:none;
-    padding:25px;
+    padding:20px;
     height:100vh;
 }
 
@@ -58,7 +58,6 @@ body.dark{
     justify-content:center;
     font-size:34px;
     font-weight:bold;
-    border:1px solid #eee;
 }
 
 .q{color:#00c853;}
@@ -87,28 +86,49 @@ button{
     cursor:pointer;
 }
 
-/* LOADER */
-.loader{
-    width:60px;
-    height:60px;
-    border:6px solid #ddd;
-    border-top:6px solid #00c853;
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:10px;
+}
+
+/* SETTINGS ICON */
+.settings{
+    font-size:20px;
+    cursor:pointer;
+}
+
+/* EYE */
+.eye{
+    width:18px;
+    height:18px;
+    border:2px solid #000;
+    border-radius:70%;
+    position:relative;
+    cursor:pointer;
+}
+
+.eye::before{
+    content:"";
+    width:6px;
+    height:6px;
+    background:#000;
     border-radius:50%;
-    margin:20px auto;
-    animation:spin 1s linear infinite;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
 }
 
-@keyframes spin{
-    100%{transform:rotate(360deg);}
-}
-
-/* HOME CARD */
+/* CARD */
 .card{
     background:linear-gradient(135deg,#00c853,#00e676);
-    padding:20px;
+    padding:18px;
     border-radius:15px;
     color:white;
-    margin-top:20px;
+    margin-top:10px;
 }
 
 .balance{
@@ -128,27 +148,49 @@ button{
     flex-direction:column;
     align-items:center;
     font-size:11px;
-    color:#fff;
     gap:5px;
 }
 
 .square{
-    width:45px;
-    height:45px;
+    width:42px;
+    height:42px;
     background:#000;
     border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:16px;
 }
 
-/* SETTINGS ICON */
-.settings{
-    position:absolute;
-    top:15px;
-    right:15px;
-    font-size:20px;
-    cursor:pointer;
+/* SERVICES */
+.services{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-top:15px;
 }
 
-/* SETTINGS */
+.service{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    font-size:10px;
+    gap:5px;
+}
+
+.circle{
+    width:45px;
+    height:45px;
+    background:#111;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+}
+
+/* SETTINGS PAGE */
 .setting-item{
     padding:15px;
     background:#f3f3f3;
@@ -160,7 +202,37 @@ body.dark .setting-item{
     background:#1e1e1e;
 }
 
-/* BOTTOM NAV */
+/* TOGGLE */
+.switch{
+    width:50px;
+    height:25px;
+    background:#ccc;
+    border-radius:20px;
+    position:relative;
+    cursor:pointer;
+}
+
+.switch::after{
+    content:"";
+    width:20px;
+    height:20px;
+    background:#fff;
+    position:absolute;
+    top:2.5px;
+    left:3px;
+    border-radius:50%;
+    transition:0.3s;
+}
+
+.switch.active{
+    background:#00c853;
+}
+
+.switch.active::after{
+    left:27px;
+}
+
+/* NAV */
 .nav{
     position:absolute;
     bottom:0;
@@ -170,27 +242,20 @@ body.dark .setting-item{
     display:flex;
     justify-content:space-around;
     align-items:center;
-}
-
-.nav div{
     color:#aaa;
     font-size:11px;
-    text-align:center;
 }
 
 .nav div.active{
     color:#00e676;
-    font-weight:bold;
 }
 
-.icon{
-    font-size:18px;
-    display:block;
-}
-
-/* PAGE */
-.page{
-    padding:20px;
+/* LOGIN SCREEN */
+.center{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    height:100%;
 }
 
 </style>
@@ -202,12 +267,13 @@ body.dark .setting-item{
 
 <!-- LOGIN -->
 <div class="screen active" id="login">
-    <div class="logo"><span class="q">Q</span><span class="pay">Pay</span></div>
+    <div class="center">
+        <div class="logo"><span class="q">Q</span><span class="pay">Pay</span></div>
 
-    <h2>Login</h2>
-
-    <input id="pass" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+        <h2>Login</h2>
+        <input id="pass" type="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
 </div>
 
 <!-- PIN -->
@@ -217,108 +283,82 @@ body.dark .setting-item{
     <button onclick="checkPin()">Continue</button>
 </div>
 
-<!-- LOADING -->
-<div class="screen" id="load">
-    <h2>Verifying...</h2>
-    <div class="loader"></div>
-</div>
-
 <!-- HOME -->
 <div class="screen" id="home">
 
-    <div class="settings" onclick="show('settings')">⚙️</div>
+    <!-- SETTINGS + EYE -->
+    <div class="header">
+        <div class="settings" onclick="show('settings')">⚙️</div>
+        <div class="eye" onclick="toggleBalance()"></div>
+    </div>
 
     <h2>Welcome 👋</h2>
 
     <div class="card">
         <p>Available Balance</p>
-        <div class="balance">₦10,000</div>
+        <div class="balance" id="balance">₦10,000</div>
 
         <!-- QUICK ACTIONS -->
         <div class="quick-actions">
-            <div class="action">
-                <div class="square"></div>
-                <span>Opay</span>
-            </div>
-
-            <div class="action">
-                <div class="square"></div>
-                <span>To Bank</span>
-            </div>
-
-            <div class="action">
-                <div class="square"></div>
-                <span>Withdraw</span>
-            </div>
+            <div class="action"><div class="square">👥</div>Opay</div>
+            <div class="action"><div class="square">🏦</div>To Bank</div>
+            <div class="action"><div class="square">💵</div>Withdraw</div>
         </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="services">
+        <div class="service"><div class="circle">📶</div>Airtime</div>
+        <div class="service"><div class="circle">🌐</div>Data</div>
+        <div class="service"><div class="circle">🎯</div>Betting</div>
+        <div class="service"><div class="circle">📺</div>TV</div>
+
+        <div class="service"><div class="circle">🔒</div>SafeBox</div>
+        <div class="service"><div class="circle">💳</div>Loan</div>
+        <div class="service"><div class="circle">👥</div>Invite</div>
+        <div class="service"><div class="circle">➕</div>More</div>
     </div>
 
 </div>
 
 <!-- REWARD -->
-<div class="screen" id="reward">
-    <h2>🎁 Reward</h2>
-    <div class="page">No rewards yet.</div>
-</div>
+<div class="screen" id="reward"><h2>Reward</h2></div>
 
 <!-- FINANCE -->
-<div class="screen" id="finance">
-    <h2>💰 Finance</h2>
-    <div class="page">Finance dashboard coming soon.</div>
-</div>
+<div class="screen" id="finance"><h2>Finance</h2></div>
 
 <!-- CARDS -->
-<div class="screen" id="cards">
-    <h2>💳 Cards</h2>
-    <div class="page">No cards yet.</div>
-</div>
+<div class="screen" id="cards"><h2>Cards</h2></div>
 
 <!-- ME -->
-<div class="screen" id="me">
-    <h2>👤 Profile</h2>
-    <div class="page">User: Iremide</div>
-</div>
+<div class="screen" id="me"><h2>Me</h2></div>
 
 <!-- SETTINGS -->
 <div class="screen" id="settings">
+
     <h2>Settings</h2>
 
     <div class="setting-item">👤 Profile</div>
     <div class="setting-item">💳 Payments</div>
     <div class="setting-item">🔐 Login Settings</div>
     <div class="setting-item">💰 Savings Account</div>
-    <div class="setting-item">🏠 Homepage Settings</div>
-    <div class="setting-item">🔔 SMS Alerts</div>
 
-    <div class="setting-item" onclick="toggleTheme()">
-        🌙 Theme (Tap to switch)
+    <div class="setting-item">
+        🌙 Dark Mode
+        <div class="switch" onclick="toggleTheme(this)"></div>
     </div>
 
     <button onclick="show('home')">Back</button>
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- NAV -->
 <div class="nav">
 
-    <div class="nav-item active" onclick="go('home',this)">
-        <span class="icon">🏠</span>Home
-    </div>
-
-    <div class="nav-item" onclick="go('reward',this)">
-        <span class="icon">🎁</span>Reward
-    </div>
-
-    <div class="nav-item" onclick="go('finance',this)">
-        <span class="icon">💰</span>Finance
-    </div>
-
-    <div class="nav-item" onclick="go('cards',this)">
-        <span class="icon">💳</span>Cards
-    </div>
-
-    <div class="nav-item" onclick="go('me',this)">
-        <span class="icon">👤</span>Me
-    </div>
+    <div class="active" onclick="go('home',this)">🏠 Home</div>
+    <div onclick="go('reward',this)">🎁 Reward</div>
+    <div onclick="go('finance',this)">💰 Finance</div>
+    <div onclick="go('cards',this)">💳 Cards</div>
+    <div onclick="go('me',this)">👤 Me</div>
 
 </div>
 
@@ -333,7 +373,7 @@ function show(id){
 
 /* NAV */
 function go(page,el){
-    document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+    document.querySelectorAll(".nav div").forEach(n=>n.classList.remove("active"));
     el.classList.add("active");
     show(page);
 }
@@ -350,19 +390,29 @@ function login(){
 /* PIN */
 function checkPin(){
     if(document.getElementById("pinInput").value==="1234"){
-        show("load");
-        setTimeout(()=>show("home"),2000);
+        show("home");
     }else{
         alert("Wrong PIN");
     }
 }
 
+/* BALANCE TOGGLE */
+let hidden=false;
+
+function toggleBalance(){
+    let bal=document.getElementById("balance");
+    hidden=!hidden;
+
+    bal.textContent = hidden ? "₦xxx" : "₦10,000";
+}
+
 /* THEME */
-function toggleTheme(){
+function toggleTheme(el){
+    el.classList.toggle("active");
     document.body.classList.toggle("dark");
 }
 
 </script>
 
 </body>
-                                                        </html>
+    </html>
