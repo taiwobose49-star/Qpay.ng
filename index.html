@@ -79,22 +79,6 @@ input{
     border-radius:10px;
     border:1px solid #ddd;
     text-align:center;
-    transition:0.2s;
-}
-
-/* ERROR STYLE */
-input.error{
-    border:2px solid red;
-    animation:shake 0.4s;
-}
-
-@keyframes shake{
-    0%{transform:translateX(0);}
-    20%{transform:translateX(-8px);}
-    40%{transform:translateX(8px);}
-    60%{transform:translateX(-8px);}
-    80%{transform:translateX(8px);}
-    100%{transform:translateX(0);}
 }
 
 button{
@@ -124,13 +108,39 @@ button{
     100%{transform:rotate(360deg);}
 }
 
-/* DASHBOARD */
+/* TRANSACTIONS */
+.tx-container{
+    margin-top:10px;
+}
+
+.tx-title{
+    font-size:14px;
+    color:#333;
+    margin-bottom:8px;
+    font-weight:bold;
+}
+
+.tx{
+    background:#f5f5f5;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.tx small{
+    color:#777;
+}
+
+/* DASHBOARD CARD */
 .card{
     background:linear-gradient(135deg,#00c853,#00e676);
     padding:20px;
     border-radius:15px;
     color:white;
-    margin-top:15px;
+    margin-top:10px;
 }
 
 .balance-header{
@@ -144,9 +154,26 @@ button{
     font-weight:bold;
 }
 
+/* BLACK EYE ICON */
 .eye{
+    width:18px;
+    height:18px;
+    border:2px solid #000;
+    border-radius:70%;
+    position:relative;
     cursor:pointer;
-    font-size:18px;
+}
+
+.eye::before{
+    content:"";
+    width:6px;
+    height:6px;
+    background:#000;
+    border-radius:50%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
 }
 
 /* NAV */
@@ -209,10 +236,40 @@ button{
 <div class="screen" id="home">
     <h2>Welcome, Iremide 👋</h2>
 
+    <!-- TRANSACTIONS -->
+    <div class="tx-container">
+        <div class="tx-title">Transaction History</div>
+
+        <div class="tx">
+            <div>
+                <b>Data Purchase</b><br>
+                <small>Today</small>
+            </div>
+            <b>-₦1,000</b>
+        </div>
+
+        <div class="tx">
+            <div>
+                <b>Bank Transfer</b><br>
+                <small>Yesterday</small>
+            </div>
+            <b>-₦2,500</b>
+        </div>
+
+        <div class="tx">
+            <div>
+                <b>Wallet Top-up</b><br>
+                <small>2 days ago</small>
+            </div>
+            <b>+₦5,000</b>
+        </div>
+    </div>
+
+    <!-- BALANCE -->
     <div class="card">
         <div class="balance-header">
             <p>Available Balance</p>
-            <span class="eye" onclick="toggleBalance()">👁️</span>
+            <div class="eye" onclick="toggleBalance()"></div>
         </div>
 
         <div class="balance" id="balance">₦10,000</div>
@@ -244,11 +301,7 @@ function login(){
         show("pin");
     }else{
         input.classList.add("error");
-
-        setTimeout(()=>{
-            input.classList.remove("error");
-        },500);
-
+        setTimeout(()=>input.classList.remove("error"),500);
         input.value="";
     }
 }
@@ -282,4 +335,4 @@ function toggleBalance(){
 </script>
 
 </body>
-</html>
+    </html>
