@@ -31,19 +31,95 @@ body {
 }
 
 /* login box */
-.login-box {
-    position: relative;
-    width: 90%;
-    max-width: 350px;
-    padding: 25px;
-    background: rgba(0,0,0,0.75);
-    border: 2px solid #00f7ff;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00f7ff;
-    text-align: center;
-    color: white;
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title><style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
 
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#00c853,#00e676,#00b248);
+}
+
+.login-box{
+    width:90%;
+    max-width:360px;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    color:#00a63e;
+    margin-bottom:10px;
+    font-size:28px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#00c853;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.footer{
+    text-align:center;
+    margin-top:15px;
+    color:#777;
+    font-size:14px;
+}
+</style></head><body><div class="login-box">
+    <h1>Login Into Your Account</h1>
+    <p class="subtitle">Welcome back</p><input type="text" placeholder="Enter your mobile number / Email">
+
+<button onclick="login()">Login</button>
+
+<div class="footer">
+    Secure Login Portal
+</div>
+
+</div><script>
+function login(){
+    alert("Login button clicked!");
+}
+</script></body>
+</html>
 /* title glow */
 .login-box h1 {
     margin-bottom: 20px;
@@ -96,8 +172,7 @@ button:hover {
 <div class="overlay"></div>
 
 <div class="login-box">
-    <h1>HELLO WROLD
-    LLET HACK</h1>
+    <h1>FREE FIRE LOGIN</h1>
 
     <input type="text" placeholder="Player ID">
     <input type="password" placeholder="Password">
@@ -127,4 +202,4 @@ function login(){
 </script>
 
 </body>
-  </html>
+</html>
