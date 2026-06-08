@@ -58,7 +58,6 @@ body.dark{
     justify-content:center;
     font-size:34px;
     font-weight:bold;
-    position:relative;
     border:1px solid #eee;
 }
 
@@ -126,77 +125,58 @@ button{
     cursor:pointer;
 }
 
-/* SETTINGS PAGE */
+/* SETTINGS ITEMS */
 .setting-item{
     padding:15px;
     background:#f3f3f3;
     margin-bottom:10px;
     border-radius:10px;
-    cursor:pointer;
 }
 
 body.dark .setting-item{
     background:#1e1e1e;
 }
 
-/* TOGGLE SWITCH */
-.switch{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:10px;
-}
-
-.toggle{
-    width:50px;
-    height:25px;
-    background:#ccc;
-    border-radius:20px;
-    position:relative;
-    cursor:pointer;
-}
-
-.toggle::after{
-    content:"";
-    width:20px;
-    height:20px;
-    background:#fff;
-    position:absolute;
-    top:2.5px;
-    left:3px;
-    border-radius:50%;
-    transition:0.3s;
-}
-
-.toggle.active{
-    background:#00c853;
-}
-
-.toggle.active::after{
-    left:27px;
-}
-
-/* NAV */
+/* BOTTOM NAV */
 .nav{
     position:absolute;
     bottom:0;
     width:100%;
     height:70px;
-    background:#111;
+    background:#fff;
+    border-top:1px solid #ddd;
     display:flex;
     justify-content:space-around;
     align-items:center;
 }
 
-.nav div{
-    color:#aaa;
-    font-size:12px;
-    text-align:center;
+body.dark .nav{
+    background:#111;
+    border-top:1px solid #222;
 }
 
-.nav div.active{
-    color:#00e676;
+.nav-item{
+    font-size:11px;
+    text-align:center;
+    color:#777;
+    cursor:pointer;
 }
+
+.nav-item.active{
+    color:#00c853;
+    font-weight:bold;
+}
+
+.icon{
+    font-size:18px;
+    display:block;
+}
+
+/* PAGES */
+.page{
+    padding:20px;
+}
+
 </style>
 </head>
 
@@ -206,10 +186,7 @@ body.dark .setting-item{
 
 <!-- LOGIN -->
 <div class="screen active" id="login">
-    <div class="logo">
-        <span class="q">Q</span><span class="pay">Pay</span>
-    </div>
-
+    <div class="logo"><span class="q">Q</span><span class="pay">Pay</span></div>
     <h2>Login</h2>
 
     <input id="pass" type="password" placeholder="Password">
@@ -229,23 +206,44 @@ body.dark .setting-item{
     <div class="loader"></div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- HOME -->
 <div class="screen" id="home">
-
     <div class="settings" onclick="show('settings')">⚙️</div>
 
     <h2>Welcome 👋</h2>
 
     <div class="card">
         <p>Available Balance</p>
-        <div class="balance" id="balance">₦10,000</div>
+        <div class="balance">₦10,000</div>
     </div>
+</div>
 
+<!-- REWARD -->
+<div class="screen" id="reward">
+    <h2>🎁 Reward</h2>
+    <div class="page">
+        <p>No rewards available yet.</p>
+    </div>
+</div>
+
+<!-- FINANCE -->
+<div class="screen" id="finance">
+    <h2>💰 Finance</h2>
+    <div class="page">
+        <p>Finance dashboard coming soon.</p>
+    </div>
+</div>
+
+<!-- CARDS -->
+<div class="screen" id="cards">
+    <h2>💳 Cards</h2>
+    <div class="page">
+        <p>No cards created yet.</p>
+    </div>
 </div>
 
 <!-- SETTINGS -->
 <div class="screen" id="settings">
-
     <h2>Settings</h2>
 
     <div class="setting-item">👤 Profile</div>
@@ -253,17 +251,47 @@ body.dark .setting-item{
     <div class="setting-item">🔐 Login Settings</div>
     <div class="setting-item">💰 Savings Account</div>
     <div class="setting-item">🏠 Homepage Settings</div>
-    <div class="setting-item">🔔 SMS Alert Settings</div>
+    <div class="setting-item">🔔 SMS Alerts</div>
 
-    <div class="setting-item">
-        🌙 Themes
-        <div class="switch">
-            <small>Dark Mode</small>
-            <div class="toggle" onclick="toggleTheme(this)"></div>
-        </div>
+    <div class="setting-item" onclick="toggleTheme()">
+        🌙 Theme (Tap to switch)
     </div>
 
     <button onclick="show('home')">Back</button>
+</div>
+
+<!-- ME (PROFILE) -->
+<div class="screen" id="me">
+    <h2>👤 Profile</h2>
+    <div class="page">
+        <p>User: Iremide</p>
+        <p>Status: Active</p>
+    </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="nav">
+
+    <div class="nav-item active" onclick="go('home',this)">
+        <span class="icon">🏠</span>Home
+    </div>
+
+    <div class="nav-item" onclick="go('reward',this)">
+        <span class="icon">🎁</span>Reward
+    </div>
+
+    <div class="nav-item" onclick="go('finance',this)">
+        <span class="icon">💰</span>Finance
+    </div>
+
+    <div class="nav-item" onclick="go('cards',this)">
+        <span class="icon">💳</span>Cards
+    </div>
+
+    <div class="nav-item" onclick="go('me',this)">
+        <span class="icon">👤</span>Me
+    </div>
+
 </div>
 
 </div>
@@ -273,6 +301,13 @@ body.dark .setting-item{
 function show(id){
     document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
+}
+
+/* NAV */
+function go(page,el){
+    document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+    el.classList.add("active");
+    show(page);
 }
 
 /* LOGIN */
@@ -295,12 +330,11 @@ function checkPin(){
 }
 
 /* THEME */
-function toggleTheme(el){
-    el.classList.toggle("active");
+function toggleTheme(){
     document.body.classList.toggle("dark");
 }
 
 </script>
 
 </body>
-</html>
+    </html>
