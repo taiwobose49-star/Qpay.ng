@@ -10,18 +10,18 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
 body{
     height:100vh;
-    background:linear-gradient(135deg,#00c853,#00e676,#00b248);
     display:flex;
     justify-content:center;
     align-items:center;
+    background:linear-gradient(135deg,#00c853,#00e676,#00b248);
 }
 
-/* APP CONTAINER */
+/* APP */
 .app{
     width:100%;
     max-width:420px;
@@ -31,19 +31,115 @@ body{
     overflow:hidden;
 }
 
-/* PAGES */
-.page{
+/* SCREENS */
+.screen{
     display:none;
     padding:25px;
     height:calc(100vh - 70px);
     overflow-y:auto;
 }
 
-.page.active{
+.screen.active{
     display:block;
 }
 
-/* TOP CARD */
+/* LOGIN */
+.logo{
+    width:150px;
+    height:80px;
+    margin:0 auto 20px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#fff,#d9f0ff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:34px;
+    font-weight:bold;
+    position:relative;
+}
+
+.logo::before{
+    content:"";
+    position:absolute;
+    left:0;
+    width:8px;
+    height:100%;
+    background:#00a8ff;
+}
+
+.q{color:#00a8ff;}
+.pay{color:#111;}
+
+h2{text-align:center;color:#00a63e;}
+p{text-align:center;color:#666;margin-bottom:15px;}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    text-align:center;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#00c853;
+    color:#fff;
+    font-weight:bold;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+/* FINGERPRINT */
+.fingerprint{
+    width:120px;
+    height:120px;
+    margin:20px auto;
+    border-radius:50%;
+    border:3px solid #00a8ff;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.1);}
+    100%{transform:scale(1);}
+}
+
+/* LOADER */
+.loader{
+    width:60px;
+    height:60px;
+    border:6px solid #ddd;
+    border-top:6px solid #00a8ff;
+    border-radius:50%;
+    margin:20px auto;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    100%{transform:rotate(360deg);}
+}
+
+/* SUCCESS */
+.check{
+    width:80px;
+    height:80px;
+    background:#00c853;
+    border-radius:50%;
+    margin:20px auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:40px;
+}
+
+/* DASHBOARD */
 .card{
     background:linear-gradient(135deg,#00c853,#00e676);
     padding:20px;
@@ -57,30 +153,7 @@ body{
     font-weight:bold;
 }
 
-/* BUTTONS */
-button{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:10px;
-    background:#00c853;
-    color:white;
-    font-weight:bold;
-    margin-top:15px;
-    cursor:pointer;
-}
-
-/* INPUT */
-input{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border-radius:10px;
-    border:1px solid #ddd;
-    text-align:center;
-}
-
-/* NAV BAR */
+/* NAV */
 .nav{
     position:absolute;
     bottom:0;
@@ -103,40 +176,7 @@ input{
     color:#00e676;
 }
 
-/* ICON STYLE */
-.icon{
-    font-size:18px;
-    display:block;
-    margin-bottom:3px;
-}
-
-/* SECTIONS */
-.section{
-    display:none;
-}
-
-.section.active{
-    display:block;
-}
-
-/* PROFILE */
-.profile-box{
-    text-align:center;
-    margin-top:20px;
-}
-
-.avatar{
-    width:80px;
-    height:80px;
-    background:#00c853;
-    border-radius:50%;
-    margin:0 auto;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:30px;
-    color:#fff;
-}
+.icon{display:block;font-size:18px;}
 </style>
 </head>
 
@@ -144,103 +184,103 @@ input{
 
 <div class="app">
 
-<!-- HOME -->
-<div class="page active" id="home">
-    <h2>Home</h2>
+<!-- LOGIN -->
+<div class="screen active" id="login">
+    <div class="logo">
+        <span class="q">Q</span><span class="pay">Pay</span>
+    </div>
+
+    <h2>Login</h2>
+    <p>Enter account</p>
+
+    <input id="user" placeholder="Email / Phone">
+    <input id="pass" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- PIN -->
+<div class="screen" id="pin">
+    <h2>Enter PIN</h2>
+    <input id="pinInput" type="password" maxlength="4" placeholder="4-digit PIN">
+    <button onclick="checkPin()">Continue</button>
+</div>
+
+<!-- FINGERPRINT -->
+<div class="screen" id="finger">
+    <h2>Fingerprint Unlock</h2>
+    <div class="fingerprint"></div>
+    <button onclick="loading()">Scan</button>
+</div>
+
+<!-- LOADING -->
+<div class="screen" id="load">
+    <h2>Verifying...</h2>
+    <div class="loader"></div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="home">
+    <h2>Welcome, Iremide 👋</h2>
 
     <div class="card">
-        <p>Welcome, Iremide 👋</p>
+        <p>Balance</p>
         <div class="balance">₦10,000</div>
     </div>
 
-    <button onclick="goSend()">Send Money</button>
+    <button onclick="sendMoney()">Send Money</button>
 </div>
 
-<!-- SEND -->
-<div class="page" id="send">
-    <h2>Send Money</h2>
-
-    <input type="text" placeholder="Recipient Number">
-    <input type="number" placeholder="Amount (₦)">
-
-    <button onclick="sendMoney()">Send</button>
-</div>
-
-<!-- WALLET -->
-<div class="page" id="wallet">
-    <h2>Wallet</h2>
-
-    <div class="card">
-        <p>Main Balance</p>
-        <div class="balance">₦10,000</div>
-    </div>
-
-    <div class="card">
-        <p>Bonus Balance</p>
-        <div class="balance">₦500</div>
-    </div>
-</div>
-
-<!-- PROFILE -->
-<div class="page" id="profile">
-    <h2>Profile</h2>
-
-    <div class="profile-box">
-        <div class="avatar">I</div>
-        <h3>Iremide</h3>
-        <p>Verified User</p>
-    </div>
-</div>
-
-<!-- BOTTOM NAV -->
+<!-- NAV -->
 <div class="nav">
-    <div class="active" onclick="showPage('home',this)">
-        <span class="icon">🏠</span>
-        Home
-    </div>
-
-    <div onclick="showPage('send',this)">
-        <span class="icon">💸</span>
-        Send
-    </div>
-
-    <div onclick="showPage('wallet',this)">
-        <span class="icon">👛</span>
-        Wallet
-    </div>
-
-    <div onclick="showPage('profile',this)">
-        <span class="icon">👤</span>
-        Profile
-    </div>
+    <div class="active" onclick="go('home')"><span class="icon">🏠</span>Home</div>
+    <div onclick="go('home')"><span class="icon">💸</span>Send</div>
+    <div onclick="go('home')"><span class="icon">👛</span>Wallet</div>
+    <div onclick="go('home')"><span class="icon">👤</span>Profile</div>
 </div>
 
 </div>
 
 <script>
 
-function showPage(page,el){
-
-    // hide pages
-    let pages=document.querySelectorAll(".page");
-    pages.forEach(p=>p.classList.remove("active"));
-
-    document.getElementById(page).classList.add("active");
-
-    // nav active state
-    let navs=document.querySelectorAll(".nav div");
-    navs.forEach(n=>n.classList.remove("active"));
-
-    el.classList.add("active");
+function show(id){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
 }
 
-function goSend(){
-    showPage("send",document.querySelectorAll(".nav div")[1]);
+/* LOGIN */
+function login(){
+    let p=document.getElementById("pass").value;
+    if(p==="0000"){
+        show("pin");
+    }else{
+        alert("Wrong password (0000)");
+    }
 }
 
+/* PIN */
+function checkPin(){
+    if(document.getElementById("pinInput").value==="1234"){
+        show("finger");
+    }else{
+        alert("Wrong PIN");
+    }
+}
+
+/* FINGER */
+function loading(){
+    show("load");
+    setTimeout(()=>show("home"),2000);
+}
+
+/* SEND */
 function sendMoney(){
     alert("Money sent successfully ✔️");
-    showPage("home",document.querySelectorAll(".nav div")[0]);
+}
+
+/* NAV */
+function go(id){
+    show(id);
 }
 
 </script>
