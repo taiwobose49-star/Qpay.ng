@@ -7,7 +7,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,sans-serif;
+    font-family:Arial, sans-serif;
 }
 
 body{
@@ -16,6 +16,7 @@ body{
     justify-content:center;
     align-items:center;
     background:linear-gradient(135deg,#00c853,#00e676,#00b248);
+    overflow:hidden;
 }
 
 .login-box{
@@ -28,34 +29,24 @@ body{
 }
 
 .logo{
-    width:160px;
+    width:140px;
     height:80px;
     margin:0 auto 20px;
     border-radius:20px;
-    background:#ffffff;
+    background:#111;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:36px;
+    font-size:32px;
     font-weight:bold;
-    box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
 
 .q{
-    background:linear-gradient(
-        90deg,
-        #00c853 0%,
-        #00c853 40%,
-        #42a5f5 55%,
-        #00c853 70%,
-        #00c853 100%
-    );
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+    color:#00c853;
 }
 
 .pay{
-    color:#222222;
+    color:#ffffff;
 }
 
 h1{
@@ -95,6 +86,7 @@ button{
     font-size:16px;
     font-weight:bold;
     cursor:pointer;
+    transition:0.3s;
 }
 
 button:hover{
@@ -125,7 +117,20 @@ button:hover{
 
 </div><script>
 function login(){
-    alert("Login button clicked!");
+    document.body.innerHTML = `
+        <div style="
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            background:linear-gradient(135deg,#00c853,#00e676,#00b248);
+            color:white;
+            font-size:28px;
+            font-weight:bold;
+        ">
+            Welcome to QPay
+        </div>
+    `;
 }
 </script></body>
 </html>
