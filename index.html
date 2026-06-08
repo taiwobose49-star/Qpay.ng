@@ -1,8 +1,11 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QPay Login</title><style>
+<title>QPay Login</title>
+
+<style>
 *{
     margin:0;
     padding:0;
@@ -16,44 +19,61 @@ body{
     justify-content:center;
     align-items:center;
     background:linear-gradient(135deg,#00c853,#00e676,#00b248);
-    overflow:hidden;
 }
 
+/* LOGIN BOX */
 .login-box{
     width:90%;
     max-width:380px;
-    background:#ffffff;
+    background:#fff;
     padding:30px;
     border-radius:20px;
     box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
+/* LOGO */
 .logo{
-    width:140px;
+    width:150px;
     height:80px;
     margin:0 auto 20px;
-    border-radius:20px;
-    background:#111;
+    border-radius:18px;
+    background:linear-gradient(135deg,#ffffff,#d9f0ff);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:32px;
+    font-size:34px;
     font-weight:bold;
+    position:relative;
+    overflow:hidden;
+}
+
+/* LEFT BLUE STRIPE */
+.logo::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:8px;
+    height:100%;
+    background:#00a8ff;
+    border-top-left-radius:18px;
+    border-bottom-left-radius:18px;
 }
 
 .q{
-    color:#00c853;
+    color:#00a8ff;
+    margin-right:2px;
 }
 
 .pay{
-    color:#ffffff;
+    color:#111;
 }
 
 h1{
     color:#00a63e;
     text-align:center;
     margin-bottom:10px;
-    font-size:28px;
+    font-size:26px;
 }
 
 .subtitle{
@@ -86,7 +106,6 @@ button{
     font-size:16px;
     font-weight:bold;
     cursor:pointer;
-    transition:0.3s;
 }
 
 button:hover{
@@ -99,38 +118,75 @@ button:hover{
     color:#777;
     font-size:14px;
 }
-</style></head><body><div class="login-box"><div class="logo">
-    <span class="q">Q</span><span class="pay">Pay</span>
-</div>
 
-<h1>Login Into Your Account</h1>
-
-<p class="subtitle">Welcome back</p>
-
-<input type="text" placeholder="Enter your mobile number / Email">
-
-<button onclick="login()">Login</button>
-
-<div class="footer">
-    Secure Login Portal
-</div>
-
-</div><script>
-function login(){
-    document.body.innerHTML = `
-        <div style="
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            background:linear-gradient(135deg,#00c853,#00e676,#00b248);
-            color:white;
-            font-size:28px;
-            font-weight:bold;
-        ">
-            Welcome to QPay
-        </div>
-    `;
+/* DASHBOARD */
+.dashboard{
+    display:none;
+    width:90%;
+    max-width:380px;
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    text-align:center;
 }
-</script></body>
+
+.card{
+    background:linear-gradient(135deg,#00c853,#00e676);
+    padding:20px;
+    border-radius:15px;
+    color:white;
+    margin-top:20px;
+}
+
+.balance{
+    font-size:28px;
+    font-weight:bold;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="login-box" id="loginBox">
+
+    <div class="logo">
+        <span class="q">Q</span><span class="pay">Pay</span>
+    </div>
+
+    <h1>Login Into Your Account</h1>
+    <p class="subtitle">Welcome back</p>
+
+    <input type="text" placeholder="Enter your mobile number / Email" id="userInput">
+
+    <button onclick="login()">Login</button>
+
+    <div class="footer">
+        Secure Login Portal
+    </div>
+
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+    <h2>Welcome, Iremide 👋</h2>
+
+    <div class="card">
+        <p>Your Balance</p>
+        <div class="balance">₦10,000</div>
+    </div>
+
+</div>
+
+<script>
+function login(){
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+}
+</script>
+
+</body>
 </html>
