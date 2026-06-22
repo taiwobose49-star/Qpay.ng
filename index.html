@@ -1,64 +1,79 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Happy Birthday 3D</title>
-
-<style>
-body{
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday</title><style>
+*{
     margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#000;
     overflow:hidden;
-    background:black;
 }
 
 canvas{
     display:block;
 }
-</style>
-</head>
-<body>
-
-<canvas id="c"></canvas>
+</style></head>
+<body><canvas id="canvas"></canvas>
 
 <script>
-const canvas = document.getElementById("c");
+const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
 
 const particles = [];
 
-const text = "HAPPY BIRTHDAY";
+const tempCanvas = document.createElement("canvas");
+const tempCtx = tempCanvas.getContext("2d");
 
-const temp = document.createElement("canvas");
-const tctx = temp.getContext("2d");
+tempCanvas.width = canvas.width;
+tempCanvas.height = canvas.height;
 
-temp.width = canvas.width;
-temp.height = canvas.height;
+const fontSize = Math.min(canvas.width / 8, 90);
 
-tctx.fillStyle = "white";
-tctx.font = "bold 100px Arial";
-tctx.textAlign = "center";
-tctx.fillText(text, temp.width/2, temp.height/2);
+tempCtx.fillStyle = "#fff";
+tempCtx.textAlign = "center";
+tempCtx.textBaseline = "middle";
+tempCtx.font = `bold ${fontSize}px Arial`;
+tempCtx.fillText(
+    "HAPPY BIRTHDAY",
+    tempCanvas.width / 2,
+    tempCanvas.height / 2
+);
 
-const data = tctx.getImageData(
-0,0,temp.width,temp.height
-).data;
+const imageData = tempCtx.getImageData(
+    0,
+    0,
+    tempCanvas.width,
+    tempCanvas.height
+);
 
-for(let y=0;y<temp.height;y+=6){
-    for(let x=0;x<temp.width;x+=6){
-        const index = (y*temp.width+x)*4;
+for(let y = 0; y < tempCanvas.height; y += 5){
+    for(let x = 0; x < tempCanvas.width; x += 5){
 
-        if(data[index+3] > 128){
+        const index = (y * tempCanvas.width + x) * 4;
+
+        if(imageData.data[index + 3] > 128){
 
             particles.push({
-                x:(Math.random()-0.5)*2000,
-                y:(Math.random()-0.5)*2000,
-                z:Math.random()*2000,
-                tx:x-canvas.width/2,
-                ty:y-canvas.height/2
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                z: Math.random() * 800,
+
+                tx: x,
+                ty: y,
+
+                size: Math.random() * 3 + 1
             });
         }
     }
@@ -74,25 +89,33 @@ function animate(){
 
     particles.forEach(p=>{
 
-        p.x += (p.tx-p.x)*0.03;
-        p.y += (p.ty-p.y)*0.03;
+        p.x += (p.tx - p.x) * 0.05;
+        p.y += (p.ty - p.y) * 0.05;
 
         const cos = Math.cos(angle);
         const sin = Math.sin(angle);
 
-        const rx = p.x*cos - p.z*sin;
-        const rz = p.x*sin + p.z*cos;
+        const cx = p.x - canvas.width/2;
 
-        const scale = 600/(600+rz);
+        const rx = cx*cos - p.z*sin;
+        const rz = cx*sin + p.z*cos;
 
-        const sx = rx*scale + canvas.width/2;
-        const sy = p.y*scale + canvas.height/2;
+        const scale = 700 / (700 + rz);
+
+        const drawX = rx * scale + canvas.width/2;
+        const drawY = p.y * scale;
 
         ctx.beginPath();
-        ctx.arc(sx,sy,2*scale,0,Math.PI*2);
+        ctx.arc(
+            drawX,
+            drawY,
+            p.size * scale,
+            0,
+            Math.PI * 2
+        );
 
         ctx.fillStyle =
-        `hsl(${(angle*200)%360},100%,70%)`;
+        `hsl(${(angle*100 + p.tx)%360},100%,70%)`;
 
         ctx.fill();
     });
@@ -101,12 +124,5 @@ function animate(){
 }
 
 animate();
-
-window.addEventListener("resize",()=>{
-    canvas.width=innerWidth;
-    canvas.height=innerHeight;
-});
-</script>
-
-</body>
+</script></body>
 </html>
