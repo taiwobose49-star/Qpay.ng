@@ -1,22 +1,112 @@
-const path = document.querySelector("path");
-const length = path.getTotalLength();
-const vertices = [];
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Happy Birthday 3D</title>
 
-for (let i = 0; i < length; i += 0.1) {
-    const point = path.getPointAtLength(i);
-    const vector = new THREE.Vector3(point.x, -point.y, 0);
-
-    vector.x += (Math.random() - 0.5) * 30;
-    vector.y += (Math.random() - 0.5) * 30;
-    vector.z += (Math.random() - 0.5) * 70;
-
-    vertices.push(vector);
-
-    tl.from(vector, {
-        x: 600 / 2,
-        y: -552 / 2,
-        z: 0,
-        ease: "power2.inOut",
-        duration: "random(2, 5)"
-    }, i * 0.002);
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:black;
 }
+
+canvas{
+    display:block;
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+const particles = [];
+
+const text = "HAPPY BIRTHDAY";
+
+const temp = document.createElement("canvas");
+const tctx = temp.getContext("2d");
+
+temp.width = canvas.width;
+temp.height = canvas.height;
+
+tctx.fillStyle = "white";
+tctx.font = "bold 100px Arial";
+tctx.textAlign = "center";
+tctx.fillText(text, temp.width/2, temp.height/2);
+
+const data = tctx.getImageData(
+0,0,temp.width,temp.height
+).data;
+
+for(let y=0;y<temp.height;y+=6){
+    for(let x=0;x<temp.width;x+=6){
+        const index = (y*temp.width+x)*4;
+
+        if(data[index+3] > 128){
+
+            particles.push({
+                x:(Math.random()-0.5)*2000,
+                y:(Math.random()-0.5)*2000,
+                z:Math.random()*2000,
+                tx:x-canvas.width/2,
+                ty:y-canvas.height/2
+            });
+        }
+    }
+}
+
+let angle = 0;
+
+function animate(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    angle += 0.01;
+
+    particles.forEach(p=>{
+
+        p.x += (p.tx-p.x)*0.03;
+        p.y += (p.ty-p.y)*0.03;
+
+        const cos = Math.cos(angle);
+        const sin = Math.sin(angle);
+
+        const rx = p.x*cos - p.z*sin;
+        const rz = p.x*sin + p.z*cos;
+
+        const scale = 600/(600+rz);
+
+        const sx = rx*scale + canvas.width/2;
+        const sy = p.y*scale + canvas.height/2;
+
+        ctx.beginPath();
+        ctx.arc(sx,sy,2*scale,0,Math.PI*2);
+
+        ctx.fillStyle =
+        `hsl(${(angle*200)%360},100%,70%)`;
+
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener("resize",()=>{
+    canvas.width=innerWidth;
+    canvas.height=innerHeight;
+});
+</script>
+
+</body>
+</html>
